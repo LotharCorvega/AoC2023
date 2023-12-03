@@ -1,12 +1,13 @@
 file = open("input.txt", "r").read()
 grid = [line for line in file.split("\n")]
 
-def checkForSymbols(line, start, end):
+def getGears(line, start, end):
+    gears = []
     for i in range(max(0, line - 1), min(len(grid), line + 2)):
         for j in range(max(0, start - 1), min(len(grid[line]), end + 1)):
             if not (i == line and j in range(start, end)) and grid[i][j] == "*":
-                return (i, j)
-    return False
+                gears.append((i, j))
+    return gears
 
 readingNum = False
 start = 0
@@ -19,8 +20,7 @@ for i in range(len(grid)):
             readingNum = True
         
         if readingNum and not grid[i][j].isnumeric():
-            gear = checkForSymbols(i, start, j)
-            if gear:
+            for gear in getGears(i, start, j):
                 if not gear in partNumbers:
                     partNumbers[gear] = [int(grid[i][start:j])]
                 else:
@@ -28,9 +28,8 @@ for i in range(len(grid)):
             readingNum = False
     
     if readingNum:
-        gear = checkForSymbols(i, start, j)
-        if gear:
-            if not n in partNumbers:
+        for gear in getGears(i, start, j):
+            if not gear in partNumbers:
                 partNumbers[gear] = [int(grid[i][start:])]
             else:
                 partNumbers[gear].append(int(grid[i][start:]))
