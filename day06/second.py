@@ -1,13 +1,14 @@
+import math
+
 file = open("input.txt", "r").read()
 lines = file.split("\n")
 
 t = int(lines[0][10:].replace(" ", ""))
 d = int(lines[1][10:].replace(" ", ""))
 
-ways = 0
+det = math.sqrt(t * t - 4 * d)
 
-for lt in range(0, t):
-    if (t - lt) * lt > d:
-        ways += 1
+x0 = (-t + det) / -2
+x1 = (-t - det) / -2
 
-print(ways)
+print(math.ceil(x1 - 1) - math.floor(x0 + 1) + 1)

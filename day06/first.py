@@ -1,3 +1,5 @@
+import math
+
 file = open("input.txt", "r").read()
 lines = file.split("\n")
 
@@ -10,14 +12,14 @@ for i in range(len(times)):
     t = times[i]
     d = distances[i]
     
-    ways = 0
+    det = math.sqrt(t * t - 4 * d) # term in sqrt could be negative
     
-    for lt in range(0, t):
-        if (t - lt) * lt > d:
-            ways += 1
+    x0 = (-t + det) / -2
+    x1 = (-t - det) / -2
+    
+    ways = math.ceil(x1 - 1) - math.floor(x0 + 1) + 1
     
     if ways > 0:
         p *= ways
-
 
 print(p)
