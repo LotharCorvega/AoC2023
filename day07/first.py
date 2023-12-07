@@ -67,12 +67,12 @@ def getHand(line):
     elif len(cardSet) == 5:  # high card
         handType = 0
     
-    return (handType, handStrength, hand, bid)
+    return (handType, handStrength, bid)
 
 hands = sorted([getHand(line) for line in lines])
 s = 0
 
 for i in range(len(hands)):
-    s += (i + 1) * hands[i][3]
+    s += (i + 1) * hands[i][2]
 
 print(s)
