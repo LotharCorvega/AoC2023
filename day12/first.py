@@ -9,43 +9,43 @@ for line in lines:
     
     records.append((split[0], groups))
 
-def fits(string, index, length):
-    if index < 0 or index + length > len(string):
+currentString = ""
+currentGroups = []
+MEM = {}
+
+def fits(offset, index, length):
+    if index < 0 or index + offset + length > len(currentString):
         return False
     
-    if index > 0 and string[index - 1] == "#":
+    if index > 0 and currentString[index + offset - 1] == "#":
         return False
     
-    if index + length < len(string) and string[index + length] == "#":
+    if index + offset + length < len(currentString) and currentString[index + offset + length] == "#":
         return False
     
     for j in range(index, index + length):
-        if string[j] == ".":
+        if currentString[j + offset] == ".":
             return False
     
     return True
 
-MEM = {}
-
-def ways(record):
-    if record in MEM:
-        return MEM[record]
+def ways(offset, groupIndex):
+    if (offset, groupIndex) in MEM:
+        return MEM[(offset, groupIndex)]
     
-    s = record[0]
-    l = list(record[1])
     w = 0
     
-    if len(l) == 0:
-        return not "#" in s
+    if groupIndex == len(currentGroups):
+        return not "#" in currentString[offset:]
     
-    for i in range(len(s)):
-        if fits(s, i, l[0]):
-            r = (s[i + l[0] + 1:], tuple(l[1:]))
-            val = ways(r)
+    for i in range(len(currentString) - offset):
+        if fits(offset, i, currentGroups[groupIndex]):
+            t = (offset + i + currentGroups[groupIndex] + 1, groupIndex + 1)
+            val = ways(*t)
             
-            MEM[r] = val
+            MEM[t] = val
             w += val
-        if s[i] == "#":
+        if currentString[offset + i] == "#":
             break
     
     return w
@@ -53,7 +53,10 @@ def ways(record):
 s = 0
 
 for record in records:
+    currentString = record[0]
+    currentGroups = record[1]
+    
+    s += ways(0, 0)
     MEM.clear()
-    s += ways(record)
 
 print(s)
