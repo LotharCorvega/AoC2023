@@ -10,10 +10,7 @@ def hashLabel(s):
     
     return h
 
-boxes = {}
-
-for i in range(256):
-    boxes[i] = []
+boxes = [[] for i in range(256)]
 
 for step in steps:
     if "=" in step:
