@@ -29,7 +29,10 @@ def calcPlots(start, maxSteps):
                 x, y = u
                 
                 if x >= 0 and x < size and y >= 0 and y < size and not grid[y][x] == "#":
-                    nextNew.add(u)
+                    if steps % 2 == 0 and u not in ODD:
+                        nextNew.add(u)
+                    elif u not in EVEN:
+                        nextNew.add(u)
         
         if steps % 2 == 0:
             EVEN.update(new)
